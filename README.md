@@ -24,3 +24,9 @@ py -m streamlit run streamlit_app.py
 ```
 
 Para desplegar la Sesión 3 en Streamlit Community Cloud, usa `app_gradiente.py` como archivo principal.
+
+## Sesión 4 — Lógica, Big-O y vectorización
+
+`sesion_04_logica_big_o_vectorizacion.py` contiene el desarrollo comentado y la solución del reto con la condición de fin de semana. `app_vectorizacion.py` permite comparar interactivamente la lógica con loops y con NumPy.
+
+Para desplegar la Sesión 4 en Streamlit Community Cloud, usa `app_vectorizacion.py` como archivo principal.

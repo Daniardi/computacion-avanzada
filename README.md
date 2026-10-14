@@ -30,3 +30,9 @@ Para desplegar la Sesión 3 en Streamlit Community Cloud, usa `app_gradiente.py`
 `sesion_04_logica_big_o_vectorizacion.py` contiene el desarrollo comentado y la solución del reto con la condición de fin de semana. `app_vectorizacion.py` permite comparar interactivamente la lógica con loops y con NumPy.
 
 Para desplegar la Sesión 4 en Streamlit Community Cloud, usa `app_vectorizacion.py` como archivo principal.
+
+## Sesión 5 — Preparación de datos
+
+`sesion_05_preparacion_datos.py` desarrolla el flujo de preparación con sensores IoT. `app_preparacion_datos.py` contiene las cinco páginas interactivas solicitadas. Las respuestas de la actividad están en `respuestas_sesion_05.md`.
+
+Para desplegar la Sesión 5 en Streamlit Community Cloud, usa `app_preparacion_datos.py` como archivo principal.

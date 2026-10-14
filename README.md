@@ -60,3 +60,8 @@ Para desplegar la Sesión 8 en Streamlit Community Cloud, usa `app_series_tiempo
 `sesion_10_iot_sensacion_termica.py` reproduce el pipeline de preparación y regresión. `app_iot_sensacion_termica.py` permite cargar un CSV IoT o usar datos DHT22 de demostración, analizar humedad y temperatura, y predecir la sensación térmica. Las respuestas están en `respuestas_sesion_10.md`.
 
 Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacion_termica.py` como archivo principal.
+## Sesión 11: regresión logística
+
+- `sesion_11_regresion_logistica.py`: desarrollo comentado de la práctica de clasificación de lluvia.
+- `app_regresion_logistica.py`: aplicación Streamlit interactiva para variar el umbral y las variables.
+- `respuestas_sesion_11.md`: respuestas razonadas de la actividad.

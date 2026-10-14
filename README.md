@@ -42,3 +42,9 @@ Para desplegar la Sesión 5 en Streamlit Community Cloud, usa `app_preparacion_d
 `sesion_06_estacion_san_rafael.py` consulta y prepara datos reales de la estación 9, San Rafael (Aguas), para Daniel Ardila Zabala. `app_estacion_san_rafael.py` muestra nivel, outliers, ICD, estadísticas y split cronológico. La evidencia está en `evidencia_sesion_06.md`.
 
 Para desplegar la Sesión 6 en Streamlit Community Cloud, usa `app_estacion_san_rafael.py` como archivo principal.
+
+## Sesión 7 — Regresión lineal
+
+`sesion_07_regresion_lineal.py` desarrolla regresión simple, múltiple, descenso de gradiente y métricas de evaluación. `app_regresion_lineal.py` permite variar α, iteraciones y variables predictoras. Las respuestas de práctica están en `respuestas_sesion_07.md`.
+
+Para desplegar la Sesión 7 en Streamlit Community Cloud, usa `app_regresion_lineal.py` como archivo principal.

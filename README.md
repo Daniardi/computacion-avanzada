@@ -54,3 +54,9 @@ Para desplegar la Sesión 7 en Streamlit Community Cloud, usa `app_regresion_lin
 `sesion_08_series_tiempo.py` desarrolla ventanas deslizantes y pronósticos clásicos. `app_series_tiempo.py` compara media móvil, Holt-Winters y ARIMA. Las respuestas están en `respuestas_sesion_08.md`.
 
 Para desplegar la Sesión 8 en Streamlit Community Cloud, usa `app_series_tiempo.py` como archivo principal.
+
+## Sesión 10 — IoT: captura y procesamiento
+
+`sesion_10_iot_sensacion_termica.py` reproduce el pipeline de preparación y regresión. `app_iot_sensacion_termica.py` permite cargar un CSV IoT o usar datos DHT22 de demostración, analizar humedad y temperatura, y predecir la sensación térmica. Las respuestas están en `respuestas_sesion_10.md`.
+
+Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacion_termica.py` como archivo principal.

@@ -71,3 +71,9 @@ Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacio
 - `sesion_12_pca_energia.py`: desarrollo comentado de visualización, vectores propios y PCA.
 - `app_pca_energia.py`: aplicación Streamlit para explorar perfiles diarios de consumo energético.
 - `respuestas_sesion_12.md`: respuestas a las preguntas de reflexión de la actividad.
+
+## Sesión 13: KNN y fertilidad de suelos
+
+- `sesion_13_knn_fertilidad_suelos.py`: desarrollo comentado del clasificador KNN.
+- `app_knn_fertilidad_suelos.py`: aplicación Streamlit para clasificar una muestra de suelo.
+- `respuestas_sesion_13.md`: respuestas de las preguntas de la guía.

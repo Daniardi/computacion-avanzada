@@ -48,3 +48,9 @@ Para desplegar la Sesión 6 en Streamlit Community Cloud, usa `app_estacion_san_
 `sesion_07_regresion_lineal.py` desarrolla regresión simple, múltiple, descenso de gradiente y métricas de evaluación. `app_regresion_lineal.py` permite variar α, iteraciones y variables predictoras. Las respuestas de práctica están en `respuestas_sesion_07.md`.
 
 Para desplegar la Sesión 7 en Streamlit Community Cloud, usa `app_regresion_lineal.py` como archivo principal.
+
+## Sesión 8 — Series de tiempo
+
+`sesion_08_series_tiempo.py` desarrolla ventanas deslizantes y pronósticos clásicos. `app_series_tiempo.py` compara media móvil, Holt-Winters y ARIMA. Las respuestas están en `respuestas_sesion_08.md`.
+
+Para desplegar la Sesión 8 en Streamlit Community Cloud, usa `app_series_tiempo.py` como archivo principal.

@@ -65,3 +65,9 @@ Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacio
 - `sesion_11_regresion_logistica.py`: desarrollo comentado de la práctica de clasificación de lluvia.
 - `app_regresion_logistica.py`: aplicación Streamlit interactiva para variar el umbral y las variables.
 - `respuestas_sesion_11.md`: respuestas razonadas de la actividad.
+
+## Sesión 12: analítica y visualización con PCA
+
+- `sesion_12_pca_energia.py`: desarrollo comentado de visualización, vectores propios y PCA.
+- `app_pca_energia.py`: aplicación Streamlit para explorar perfiles diarios de consumo energético.
+- `respuestas_sesion_12.md`: respuestas a las preguntas de reflexión de la actividad.

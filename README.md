@@ -77,3 +77,7 @@ Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacio
 - `sesion_13_knn_fertilidad_suelos.py`: desarrollo comentado del clasificador KNN.
 - `app_knn_fertilidad_suelos.py`: aplicación Streamlit para clasificar una muestra de suelo.
 - `respuestas_sesion_13.md`: respuestas de las preguntas de la guía.
+
+## Portafolio
+
+- `app_portafolio.py`: página central con enlaces a todas las aplicaciones desplegadas.

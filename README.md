@@ -36,3 +36,9 @@ Para desplegar la Sesión 4 en Streamlit Community Cloud, usa `app_vectorizacion
 `sesion_05_preparacion_datos.py` desarrolla el flujo de preparación con sensores IoT. `app_preparacion_datos.py` contiene las cinco páginas interactivas solicitadas. Las respuestas de la actividad están en `respuestas_sesion_05.md`.
 
 Para desplegar la Sesión 5 en Streamlit Community Cloud, usa `app_preparacion_datos.py` como archivo principal.
+
+## Sesión 6 — Aplicación de preparación de datos reales
+
+`sesion_06_estacion_san_rafael.py` consulta y prepara datos reales de la estación 9, San Rafael (Aguas), para Daniel Ardila Zabala. `app_estacion_san_rafael.py` muestra nivel, outliers, ICD, estadísticas y split cronológico. La evidencia está en `evidencia_sesion_06.md`.
+
+Para desplegar la Sesión 6 en Streamlit Community Cloud, usa `app_estacion_san_rafael.py` como archivo principal.

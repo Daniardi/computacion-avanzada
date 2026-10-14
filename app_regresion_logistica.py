@@ -37,7 +37,8 @@ st.write("Predicción de lluvia a partir de temperatura, humedad y velocidad del
 
 # Permitimos experimentar con el umbral de decisión y con la variable viento.
 umbral = st.sidebar.slider("Umbral de lluvia", 0.10, 0.90, 0.50, 0.05)
-usar_viento = st.sidebar.toggle("Incluir velocidad del viento", value=True)
+# Usamos checkbox porque es compatible con versiones antiguas y recientes de Streamlit.
+usar_viento = st.sidebar.checkbox("Incluir velocidad del viento", value=True)
 # Obtenemos la tabla simulada y definimos las columnas que alimentarán el modelo.
 datos = crear_datos()
 variables = ["temperatura", "humedad"]

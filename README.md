@@ -81,3 +81,10 @@ Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacio
 ## Portafolio
 
 - `app_portafolio.py`: página central con enlaces a todas las aplicaciones desplegadas.
+
+## Sesión 15: POO para IA
+
+- `energia_ml/`: paquete reutilizable con preprocesamiento, modelos y flujo de inferencia.
+- `sesion_15_poo_ml.py`: desarrollo comentado de clases, herencia y polimorfismo.
+- `app_poo_energia.py`: aplicación Streamlit para explorar los flujos de modelos.
+- `respuestas_sesion_15.md`: respuestas de los retos y preguntas de discusión.

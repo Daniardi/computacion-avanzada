@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estimador de vivienda</title>
+  <style>
+    :root { --azul:#075985; --fondo:#f1f5f9; --texto:#0f172a; --borde:#cbd5e1; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial, sans-serif; background:var(--fondo); color:var(--texto); }
+    main { max-width:850px; margin:auto; padding:32px 16px; }
+    .encabezado { background:linear-gradient(120deg,#075985,#0f766e); color:white; padding:28px; border-radius:16px; }
+    .tarjeta { background:white; margin-top:20px; padding:24px; border:1px solid var(--borde); border-radius:14px; }
+    .campos { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+    label { display:block; font-weight:bold; font-size:.9rem; margin-bottom:6px; }
+    small { display:block; color:#475569; font-weight:normal; }
+    input, select, button { width:100%; border-radius:8px; padding:10px; font-size:1rem; }
+    input, select { border:1px solid var(--borde); }
+    button { margin-top:20px; border:0; background:var(--azul); color:white; font-weight:bold; cursor:pointer; }
+    button:disabled { opacity:.6; }
+    #resultado { display:none; margin-top:20px; padding:18px; border-radius:10px; background:#e0f2fe; }
+    .valor { color:var(--azul); font-size:2rem; font-weight:bold; }
+    footer { margin-top:20px; color:#475569; font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="encabezado">
+      <h1>Estimador de valor de vivienda</h1>
+      <p>Modelo de regresión lineal desplegado como API FastAPI.</p>
+    </section>
+    <form id="formulario" class="tarjeta">
+      <div class="campos">
+        <div>
+          <label for="ciudad">Ciudad</label>
+          <select id="ciudad">
+            <option value="34.05,-118.24">Los Ángeles</option>
+            <option value="37.77,-122.42">San Francisco</option>
+            <option value="32.72,-117.16">San Diego</option>
+            <option value="38.58,-121.49">Sacramento</option>
+          </select>
+        </div>
+        <div><label for="MedInc">Ingreso medio <small>3.5 equivale a 35.000 USD</small></label><input id="MedInc" type="number" step="0.1" min="0" value="3.5" required></div>
+        <div><label for="HouseAge">Edad de viviendas <small>años</small></label><input id="HouseAge" type="number" min="0" value="29" required></div>
+        <div><label for="AveRooms">Habitaciones <small>promedio</small></label><input id="AveRooms" type="number" step="0.1" min="0" value="5.2" required></div>
+        <div><label for="AveBedrms">Dormitorios <small>promedio</small></label><input id="AveBedrms" type="number" step="0.05" min="0" value="1.05" required></div>
+        <div><label for="Population">Población <small>personas</small></label><input id="Population" type="number" step="10" min="0" value="1170" required></div>
+        <div><label for="AveOccup">Personas por hogar <small>promedio</small></label><input id="AveOccup" type="number" step="0.1" min="0.1" value="2.8" required></div>
+      </div>
+      <button id="boton" type="submit">Estimar valor</button>
+      <div id="resultado"><div>Valor estimado:</div><div class="valor" id="valor"></div><div id="detalle"></div></div>
+    </form>
+    <footer><span id="info">Cargando modelo...</span> · Consulta la documentación de la API en <a href="/docs">/docs</a>.</footer>
+  </main>
+  <script>
+    const campos = ["MedInc", "HouseAge", "AveRooms", "AveBedrms", "Population", "AveOccup"];
+    fetch("/modelo").then(respuesta => respuesta.json()).then(modelo => {
+      document.getElementById("info").textContent = "R2 en prueba: " + modelo.r2_prueba;
+    });
+    document.getElementById("formulario").addEventListener("submit", async evento => {
+      evento.preventDefault();
+      const boton = document.getElementById("boton");
+      boton.disabled = true;
+      const ubicacion = document.getElementById("ciudad").value.split(",").map(Number);
+      const datos = { Latitude: ubicacion[0], Longitude: ubicacion[1] };
+      campos.forEach(campo => { datos[campo] = Number(document.getElementById(campo).value); });
+      try {
+        const respuesta = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datos)
+        });
+        if (!respuesta.ok) throw new Error("La API respondió con error " + respuesta.status);
+        const resultado = await respuesta.json();
+        document.getElementById("valor").textContent = "$ " + resultado.valor_usd.toLocaleString("es-CO") + " USD";
+        document.getElementById("detalle").textContent = "Predicción: " + resultado.prediccion + " cientos de miles de USD.";
+      } catch (error) {
+        document.getElementById("valor").textContent = "No se pudo calcular";
+        document.getElementById("detalle").textContent = error.message;
+      }
+      document.getElementById("resultado").style.display = "block";
+      boton.disabled = false;
+    });
+  </script>
+</body>
+</html>

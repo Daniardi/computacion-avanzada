@@ -1,0 +1,10 @@
+{
+  "nombre": "Regresión lineal - valor de vivienda en California",
+  "variables": ["MedInc", "HouseAge", "AveRooms", "AveBedrms", "Population", "AveOccup", "Latitude", "Longitude"],
+  "media": [3.8707, 28.6395, 5.429, 1.0967, 1425.5, 3.0707, 35.6319, -119.5697],
+  "desviacion": [1.8998, 12.5856, 2.474, 0.4739, 1132.4, 10.386, 2.1359, 2.0035],
+  "pesos": [0.8296, 0.1214, -0.2626, 0.3057, -0.0045, -0.0393, -0.8998, -0.8705],
+  "sesgo": 2.0686,
+  "r2_prueba": 0.6041,
+  "unidad_salida": "cientos de miles de USD"
+}

@@ -94,3 +94,10 @@ Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacio
 - `sesion_16_procesamiento_paralelo.py`: desarrollo comentado con hilos, procesos y vectorización.
 - `app_procesamiento_paralelo.py`: aplicación Streamlit para experimentar con workers y Amdahl.
 - `respuestas_sesion_16.md`: conclusiones de la actividad.
+
+## Sesión 17: despliegue de modelos
+
+- `sesion_17_despliegue_modelos/`: proyecto FastAPI listo para desplegar en Vercel.
+- `main.py`: API con rutas de formulario, metadatos y predicción.
+- `modelo.json`: parámetros necesarios para inferencia sin bibliotecas de entrenamiento.
+- `respuestas_sesion_17.md`: respuestas sobre exportación y despliegue.

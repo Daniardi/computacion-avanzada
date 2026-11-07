@@ -88,3 +88,9 @@ Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacio
 - `sesion_15_poo_ml.py`: desarrollo comentado de clases, herencia y polimorfismo.
 - `app_poo_energia.py`: aplicación Streamlit para explorar los flujos de modelos.
 - `respuestas_sesion_15.md`: respuestas de los retos y preguntas de discusión.
+
+## Sesión 16: procesamiento paralelo
+
+- `sesion_16_procesamiento_paralelo.py`: desarrollo comentado con hilos, procesos y vectorización.
+- `app_procesamiento_paralelo.py`: aplicación Streamlit para experimentar con workers y Amdahl.
+- `respuestas_sesion_16.md`: conclusiones de la actividad.

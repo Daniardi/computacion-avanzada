@@ -132,6 +132,27 @@ actividades = [
         "descripcion": "Clasificación didáctica de fertilidad baja, media o alta con KNN.",
         "url": "https://computacion-avanzada-npnntycn4htln6e2perksi.streamlit.app/",
     },
+    {
+        "sesion": "Sesión 15",
+        "icono": "🧱",
+        "titulo": "POO para IA",
+        "descripcion": "Encapsulación, herencia y flujos reutilizables para modelos de energía.",
+        "url": "https://computacion-avanzada-clt6wquo3txm4a8o6ibk3i.streamlit.app/",
+    },
+    {
+        "sesion": "Sesión 16",
+        "icono": "⚡",
+        "titulo": "Procesamiento paralelo",
+        "descripcion": "Hilos, vectorización con NumPy y ley de Amdahl.",
+        "url": "https://computacion-avanzada-a3szvuufpupbvnamp5b4hw.streamlit.app/",
+    },
+    {
+        "sesion": "Sesión 17",
+        "icono": "🚀",
+        "titulo": "Despliegue de modelos",
+        "descripcion": "API FastAPI para estimar valor de vivienda, desplegada en Vercel.",
+        "url": "https://computacion-avanzada.vercel.app/",
+    },
 ]
 
 # Creamos dos columnas para distribuir las tarjetas de forma ordenada.

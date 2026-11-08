@@ -101,3 +101,8 @@ Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacio
 - `main.py`: API con rutas de formulario, metadatos y predicción.
 - `modelo.json`: parámetros necesarios para inferencia sin bibliotecas de entrenamiento.
 - `respuestas_sesion_17.md`: respuestas sobre exportación y despliegue.
+
+## Proyecto final: pronóstico de temperatura
+
+- `proyecto_final_consumo/`: API FastAPI, frontend, configuración InfluxDB y Docker.
+- `respuestas_proyecto_final.md`: arquitectura, seguridad y pasos de entrega.

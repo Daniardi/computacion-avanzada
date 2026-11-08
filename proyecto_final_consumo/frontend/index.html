@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pronóstico de temperatura</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root { --azul:#075985; --verde:#0f766e; --fondo:#f1f5f9; --texto:#0f172a; --error:#b91c1c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial,sans-serif; color:var(--texto); background:var(--fondo); }
+    main { max-width:1050px; margin:auto; padding:28px 16px; }
+    header { color:white; background:linear-gradient(120deg,var(--azul),var(--verde)); border-radius:16px; padding:28px; }
+    .controles, .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin:20px 0; }
+    .tarjeta, .grafica { background:white; border-radius:14px; padding:18px; box-shadow:0 2px 8px #cbd5e1; }
+    .tarjeta span { display:block; color:#475569; font-size:.85rem; } .tarjeta strong { font-size:1.45rem; color:var(--azul); }
+    label { font-weight:bold; } select, button { width:100%; margin-top:6px; padding:10px; border-radius:8px; font-size:1rem; }
+    select { border:1px solid #94a3b8; } button { border:0; background:var(--azul); color:white; cursor:pointer; font-weight:bold; }
+    #mensaje { min-height:24px; } .error { color:var(--error); font-weight:bold; } .ok { color:var(--verde); }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Pronóstico de temperatura</h1>
+      <p>Proyecto final de Computación Avanzada · SARIMA + InfluxDB + FastAPI</p>
+    </header>
+    <section class="controles">
+      <div><label for="horas">Horas a pronosticar</label><select id="horas"><option value="6">6 horas</option><option value="12" selected>12 horas</option><option value="24">24 horas</option><option value="48">48 horas</option></select></div>
+      <div><label for="confianza">Intervalo de confianza</label><select id="confianza"><option value="0.90">90 %</option><option value="0.95" selected>95 %</option><option value="0.99">99 %</option></select></div>
+      <div><label>&nbsp;</label><button id="actualizar">Actualizar pronóstico</button></div>
+    </section>
+    <p id="mensaje">Consultando la API...</p>
+    <section class="tarjetas">
+      <article class="tarjeta"><span>Próxima hora</span><strong id="proxima">--</strong></article>
+      <article class="tarjeta"><span>Máximo esperado</span><strong id="maximo">--</strong></article>
+      <article class="tarjeta"><span>Último dato en Colombia</span><strong id="ultimo">--</strong></article>
+    </section>
+    <section class="grafica"><canvas id="grafica"></canvas></section>
+  </main>
+  <script>
+    let grafica;
+    function fechaColombia(fecha) {
+      return new Date(fecha).toLocaleString("es-CO", { timeZone:"America/Bogota", hour:"2-digit", minute:"2-digit", day:"2-digit", month:"short" });
+    }
+    function mostrarGrafica(datos) {
+      const historico = datos.historico;
+      const prediccion = datos.prediccion;
+      const etiquetas = historico.concat(prediccion).map(item => fechaColombia(item.tiempo));
+      const valoresHistoricos = historico.map(item => item.valor).concat(prediccion.map(() => null));
+      const valoresPronosticados = historico.map(() => null).concat(prediccion.map(item => item.prediccion));
+      const superior = historico.map(() => null).concat(prediccion.map(item => item.limite_superior));
+      const inferior = historico.map(() => null).concat(prediccion.map(item => item.limite_inferior));
+      if (grafica) grafica.destroy();
+      grafica = new Chart(document.getElementById("grafica"), {
+        type:"line",
+        data:{ labels:etiquetas, datasets:[
+          { label:"Histórico (°C)", data:valoresHistoricos, borderColor:"#075985", tension:.25 },
+          { label:"Pronóstico (°C)", data:valoresPronosticados, borderColor:"#0f766e", tension:.25 },
+          { label:"Límite superior", data:superior, borderColor:"#94a3b8", borderDash:[5,5], pointRadius:0 },
+          { label:"Límite inferior", data:inferior, borderColor:"#94a3b8", borderDash:[5,5], pointRadius:0 }
+        ]},
+        options:{ responsive:true, plugins:{ title:{ display:true, text:"Temperatura histórica y pronóstico SARIMA" } }, scales:{ y:{ title:{ display:true, text:"Temperatura (°C)" } } } }
+      });
+    }
+    async function cargar() {
+      const mensaje = document.getElementById("mensaje");
+      const boton = document.getElementById("actualizar");
+      boton.disabled = true;
+      mensaje.className = ""; mensaje.textContent = "Consultando la API...";
+      try {
+        const horas = document.getElementById("horas").value;
+        const confianza = document.getElementById("confianza").value;
+        const respuesta = await fetch("/api/prediccion?horas=" + horas + "&historia=48&confianza=" + confianza);
+        const datos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(datos.detail || "Error desconocido de la API.");
+        const primera = datos.prediccion[0];
+        const maximo = Math.max.apply(null, datos.prediccion.map(item => item.prediccion));
+        document.getElementById("proxima").textContent = primera.prediccion.toFixed(1) + " °C";
+        document.getElementById("maximo").textContent = maximo.toFixed(1) + " °C";
+        document.getElementById("ultimo").textContent = fechaColombia(datos.ultima_observacion);
+        mostrarGrafica(datos);
+        mensaje.className = "ok"; mensaje.textContent = "Pronóstico actualizado con confianza del " + (datos.confianza * 100) + " %.";
+      } catch (error) {
+        mensaje.className = "error"; mensaje.textContent = "Error: " + error.message;
+      }
+      boton.disabled = false;
+    }
+    document.getElementById("actualizar").addEventListener("click", cargar);
+    cargar();
+  </script>
+</body>
+</html>

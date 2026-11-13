@@ -30,10 +30,10 @@ Esta opción evita instalar Python o Docker en el computador de la universidad. 
 
 1. Sube los cambios del repositorio con `git push`.
 2. En GitHub abre el repositorio, selecciona **Code**, luego **Codespaces** y elige **Create codespace on master**.
-3. En el selector de configuración elige **Proyecto final - FastAPI y Docker**. Esta configuración instala Python, las dependencias y acceso a Docker dentro del Codespace.
+3. En el selector de configuración puedes elegir **Proyecto final - FastAPI y Docker**. La configuración predeterminada **Computación Avanzada - Apps y Proyecto Final** también está preparada con Python, dependencias y acceso a Docker.
 4. Espera a que termine la creación. Se abrirán automáticamente este README y `app/main.py`.
 
-La configuración está en `.devcontainer/final-project/devcontainer.json`. GitHub permite elegir entre varias configuraciones de dev container al crear un Codespace, por lo que las prácticas de Streamlit permanecen separadas del proyecto final.
+Las configuraciones están en `.devcontainer/devcontainer.json` y `.devcontainer/final-project/devcontainer.json`. GitHub permite elegir entre varias configuraciones de dev container al crear un Codespace; ambas son compatibles con el proyecto final.
 
 ### 2.2 Ejecutar la demostración Docker en Codespaces
 
@@ -211,6 +211,7 @@ El portafolio Streamlit reúne las actividades previas de la asignatura. Este pr
 | Situación | Acción |
 | --- | --- |
 | `docker` no se reconoce o no conecta | Instalar/abrir Docker Desktop y confirmar con `docker info`. |
+| `docker: command not found` en Codespaces | Actualizar el repositorio, usar la paleta de comandos y seleccionar **Codespaces: Rebuild Container**. |
 | Puerto 8000 ocupado | Detener el servidor anterior o cambiar ambos puertos, por ejemplo `-p 8001:8000`, y abrir `http://127.0.0.1:8001`. |
 | La API indica que no hay modelo | Ejecutar `python scripts/crear_modelo_demo.py` para demo, o guardar el JSON entrenado para datos reales. |
 | Error de credenciales InfluxDB | Confirmar URL, token, organización, bucket, measurement y field; nunca publicar esos valores. |

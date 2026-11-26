@@ -29,8 +29,15 @@ jobs:
       # Consultamos salud y predicción para comprobar que la API y el modelo responden.
       - name: Verificar API dentro del contenedor
         run: |
-          curl --fail --retry 10 --retry-connrefused --retry-delay 2 http://127.0.0.1:8000/api/salud
-          curl --fail http://127.0.0.1:8000/api/prediccion?horas=6\&historia=48\&confianza=0.95
+          for intento in {1..15}; do
+            if curl --fail --silent --show-error http://127.0.0.1:8000/api/salud; then
+              break
+            fi
+            echo "Esperando a que FastAPI inicie: intento $intento de 15"
+            sleep 2
+          done
+          curl --fail --silent --show-error http://127.0.0.1:8000/api/salud
+          curl --fail --silent --show-error "http://127.0.0.1:8000/api/prediccion?horas=6&historia=48&confianza=0.95"
 
       # Publicamos logs útiles incluso cuando una verificación falla.
       - name: Mostrar registros del contenedor

@@ -106,3 +106,4 @@ Para desplegar la Sesión 10 en Streamlit Community Cloud, usa `app_iot_sensacio
 
 - `proyecto_final_consumo/`: API FastAPI, frontend, configuración InfluxDB y Docker.
 - `respuestas_proyecto_final.md`: arquitectura, seguridad y pasos de entrega.
+- `ENTREGABLE_PROYECTO_FINAL.md`: informe final con resultados, evidencias y guion de sustentación.

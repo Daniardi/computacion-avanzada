@@ -225,21 +225,11 @@ docker run --name pronostico-real -d -p 8000:8000 -e INFLUX_URL -e INFLUX_TOKEN 
 
 Docker recibe los secretos en tiempo de ejecución con `-e`; no quedan incluidos en la imagen.
 
-## 7. Guion recomendado para la explicación presencial
-
-1. **Problema (20 segundos).** “El proyecto pronostica las próximas horas de temperatura a partir de mediciones IoT. El objetivo es transformar una serie almacenada en InfluxDB en una predicción interpretable.”
-2. **Datos (30 segundos).** Mostrar `app/influx.py` y explicar la consulta, el promedio por hora y el tratamiento de huecos. Aclarar cuál es el measurement y field real utilizados.
-3. **Modelo (30 segundos).** Mostrar `models/sarima_config.json` y explicar que SARIMA incorpora dependencia temporal y estacionalidad diaria. El JSON contiene parámetros, no credenciales.
-4. **API (30 segundos).** Abrir `/docs`, ejecutar `GET /api/salud` y `GET /api/prediccion`. Explicar que FastAPI separa la lógica de datos/modelo de la interfaz.
-5. **Interfaz (30 segundos).** Abrir `/`, cambiar el horizonte y el nivel de confianza. Señalar histórico, línea de pronóstico y límites del intervalo.
-6. **Docker (45 segundos).** Abrir la ejecución verde de **Verificar Docker del proyecto final** en GitHub Actions. Mostrar que construye la imagen, inicia el contenedor y consulta la API. Concluir: la imagen permite reproducir el servicio sin instalar manualmente cada dependencia.
-7. **Seguridad (15 segundos).** “Los secretos se cargan como variables de entorno y `.env` está excluido de Git. Por eso no expongo el token en la demostración.”
-
-## 8. Relación con las demás aplicaciones
+## 7. Relación con las demás aplicaciones
 
 El portafolio Streamlit reúne las actividades previas de la asignatura. Este proyecto final es distinto: utiliza **FastAPI y Docker**, por eso se demuestra desde el puerto privado de Codespaces y con la validación Docker de GitHub Actions, no como una aplicación Streamlit adicional.
 
-## 9. Solución rápida de problemas
+## 8. Solución rápida de problemas
 
 | Situación | Acción |
 | --- | --- |
@@ -250,7 +240,7 @@ El portafolio Streamlit reúne las actividades previas de la asignatura. Este pr
 | Error de credenciales InfluxDB | Confirmar URL, token, organización, bucket, measurement y field; nunca publicar esos valores. |
 | La gráfica muestra error | Abrir `/api/salud` y `/docs`; después revisar `docker logs pronostico-demo` o la consola de Uvicorn. |
 
-## 10. Evidencias a entregar
+## 9. Evidencias a entregar
 
 - Repositorio con código comentado y este README.
 - Captura de la interfaz y de `/docs`.

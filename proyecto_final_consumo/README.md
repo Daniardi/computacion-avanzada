@@ -30,12 +30,12 @@ Esta opción evita instalar Python o Docker en el computador de la universidad. 
 
 1. Sube los cambios del repositorio con `git push`.
 2. En GitHub abre el repositorio, selecciona **Code**, luego **Codespaces** y elige **Create codespace on master**.
-3. En el selector de configuración puedes elegir **Proyecto final - FastAPI y Docker**. La configuración predeterminada **Computación Avanzada - Apps y Proyecto Final** también está preparada con Python, dependencias y acceso a Docker.
+3. En el selector de configuración puedes elegir **Proyecto final - FastAPI y Docker**. La configuración predeterminada **Computación Avanzada - Apps y Proyecto Final** también está preparada con Python y las dependencias requeridas.
 4. Espera a que termine la creación. Se abrirán automáticamente este README y `app/main.py`.
 
 Las configuraciones están en `.devcontainer/devcontainer.json` y `.devcontainer/final-project/devcontainer.json`. GitHub permite elegir entre varias configuraciones de dev container al crear un Codespace; ambas son compatibles con el proyecto final.
 
-### 2.2 Ejecutar la demostración Docker en Codespaces
+### 2.2 Ejecutar la aplicación en Codespaces
 
 En la terminal integrada del Codespace ejecutar:
 
@@ -43,29 +43,33 @@ En la terminal integrada del Codespace ejecutar:
 cd proyecto_final_consumo
 export DEMO_MODE=true
 python scripts/crear_modelo_demo.py
-docker build -t pronostico-temperatura:1.0 .
-docker run --name pronostico-demo -d -p 8000:8000 -e DEMO_MODE=true pronostico-temperatura:1.0
-docker ps
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
 En la pestaña **PORTS** aparecerá el puerto `8000`. Presiona el icono de abrir en navegador; esa URL reemplaza a `localhost` durante la sustentación. Mantén su visibilidad en **Private**, pues al estar conectado a tu cuenta podrás abrirla desde el computador de la universidad sin exponer el proyecto públicamente.
 
-Para la evidencia Docker, en la misma terminal ejecutar:
-
-```bash
-docker logs pronostico-demo
-docker exec pronostico-demo hostname
-```
-
 Después abre en la URL reenviada las rutas `/`, `/docs` y `/api/salud`. No se debe escribir `localhost:8000` directamente en el navegador del computador de la universidad: se debe usar la URL que muestra la pestaña **PORTS** de Codespaces.
 
-### 2.3 Secretos para la conexión real
+### 2.3 Evidencia Docker en GitHub Actions
+
+El repositorio valida Docker en la nube mediante el flujo **Verificar Docker del proyecto final**. GitHub Actions crea un servidor temporal, construye la imagen, inicia el contenedor, consulta `/api/salud` y `/api/prediccion`, muestra los registros y elimina el contenedor.
+
+Para mostrarlo al profesor:
+
+1. En GitHub abre la pestaña **Actions**.
+2. Selecciona **Verificar Docker del proyecto final**.
+3. Abre la ejecución con marca verde.
+4. Muestra los pasos **Construir imagen Docker**, **Iniciar contenedor** y **Verificar API dentro del contenedor**.
+
+También se puede iniciar manualmente con el botón **Run workflow**. Este flujo trabaja con `DEMO_MODE=true`, por lo cual no expone secretos de InfluxDB.
+
+### 2.4 Secretos para la conexión real
 
 Antes de usar InfluxDB real, crea secretos de Codespaces con los nombres `INFLUX_URL`, `INFLUX_TOKEN`, `INFLUX_ORG`, `INFLUX_BUCKET`, `INFLUX_MEASUREMENT` e `INFLUX_FIELD`. Se agregan desde la configuración de GitHub en **Codespaces secrets** y se autorizan para este repositorio. Los secretos aparecen como variables de entorno dentro del Codespace, pero no se guardan en Git ni se muestran en la terminal.
 
-Para una primera demostración presencial usa el modo demo. Luego, cuando el modelo esté entrenado con datos reales, se ejecuta Docker sin `-e DEMO_MODE=true` y con los secretos definidos.
+Para una primera demostración presencial usa el modo demo. Luego, cuando el modelo esté entrenado con datos reales, se ejecuta la API sin `DEMO_MODE=true` y con los secretos definidos.
 
-### 2.4 Entrenar con la serie real dentro de Codespaces
+### 2.5 Entrenar con la serie real dentro de Codespaces
 
 Con los secretos ya configurados y con `DEMO_MODE` ausente o en `false`, ejecutar:
 
@@ -75,12 +79,10 @@ unset DEMO_MODE
 python scripts/entrenar_sarima.py --historial-horas 720 --horizonte-prueba 24
 ```
 
-El script descarga la historia desde InfluxDB, separa las últimas 24 horas para validación cronológica, informa MAE y RMSE, y guarda `models/sarima_config.json`. El archivo contiene parámetros y métricas, pero no secretos. Para usar el modelo nuevo, reconstruir y ejecutar la imagen:
+El script descarga la historia desde InfluxDB, separa las últimas 24 horas para validación cronológica, informa MAE y RMSE, y guarda `models/sarima_config.json`. El archivo contiene parámetros y métricas, pero no secretos. Para usar el modelo nuevo desde Codespaces, ejecutar:
 
 ```bash
-docker rm -f pronostico-demo 2>/dev/null || true
-docker build -t pronostico-temperatura:1.0 .
-docker run --name pronostico-real -d -p 8000:8000 -e INFLUX_URL -e INFLUX_TOKEN -e INFLUX_ORG -e INFLUX_BUCKET -e INFLUX_MEASUREMENT -e INFLUX_FIELD pronostico-temperatura:1.0
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
 ## 3. Requisitos antes de la sustentación local
@@ -199,19 +201,19 @@ Docker recibe los secretos en tiempo de ejecución con `-e`; no quedan incluidos
 3. **Modelo (30 segundos).** Mostrar `models/sarima_config.json` y explicar que SARIMA incorpora dependencia temporal y estacionalidad diaria. El JSON contiene parámetros, no credenciales.
 4. **API (30 segundos).** Abrir `/docs`, ejecutar `GET /api/salud` y `GET /api/prediccion`. Explicar que FastAPI separa la lógica de datos/modelo de la interfaz.
 5. **Interfaz (30 segundos).** Abrir `/`, cambiar el horizonte y el nivel de confianza. Señalar histórico, línea de pronóstico y límites del intervalo.
-6. **Docker (45 segundos).** Ejecutar `docker ps`, `docker logs pronostico-demo` y abrir la misma interfaz. Concluir: la imagen permite reproducir el servicio sin instalar manualmente cada dependencia.
+6. **Docker (45 segundos).** Abrir la ejecución verde de **Verificar Docker del proyecto final** en GitHub Actions. Mostrar que construye la imagen, inicia el contenedor y consulta la API. Concluir: la imagen permite reproducir el servicio sin instalar manualmente cada dependencia.
 7. **Seguridad (15 segundos).** “Los secretos se cargan como variables de entorno y `.env` está excluido de Git. Por eso no expongo el token en la demostración.”
 
 ## 8. Relación con las demás aplicaciones
 
-El portafolio Streamlit reúne las actividades previas de la asignatura. Este proyecto final es distinto: utiliza **FastAPI y Docker**, por eso se demuestra en `http://127.0.0.1:8000/` y no se despliega como una aplicación Streamlit adicional.
+El portafolio Streamlit reúne las actividades previas de la asignatura. Este proyecto final es distinto: utiliza **FastAPI y Docker**, por eso se demuestra desde el puerto privado de Codespaces y con la validación Docker de GitHub Actions, no como una aplicación Streamlit adicional.
 
 ## 9. Solución rápida de problemas
 
 | Situación | Acción |
 | --- | --- |
 | `docker` no se reconoce o no conecta | Instalar/abrir Docker Desktop y confirmar con `docker info`. |
-| `docker: command not found` en Codespaces | Actualizar el repositorio, usar la paleta de comandos y seleccionar **Codespaces: Rebuild Container**. |
+| Docker no está disponible en Codespaces | Ejecutar la API directamente con Uvicorn en Codespaces; la construcción Docker se valida en GitHub Actions. |
 | Puerto 8000 ocupado | Detener el servidor anterior o cambiar ambos puertos, por ejemplo `-p 8001:8000`, y abrir `http://127.0.0.1:8001`. |
 | La API indica que no hay modelo | Ejecutar `python scripts/crear_modelo_demo.py` para demo, o guardar el JSON entrenado para datos reales. |
 | Error de credenciales InfluxDB | Confirmar URL, token, organización, bucket, measurement y field; nunca publicar esos valores. |
@@ -221,6 +223,6 @@ El portafolio Streamlit reúne las actividades previas de la asignatura. Este pr
 
 - Repositorio con código comentado y este README.
 - Captura de la interfaz y de `/docs`.
-- Captura de `docker ps` y de la interfaz funcionando desde el contenedor.
+- Captura de la ejecución verde de GitHub Actions con los pasos de construcción y prueba del contenedor.
 - Archivo `models/sarima_config.json` obtenido del entrenamiento real, si la entrega exige datos reales.
 - Video de máximo cinco minutos siguiendo el guion anterior, si el profesor lo solicita.

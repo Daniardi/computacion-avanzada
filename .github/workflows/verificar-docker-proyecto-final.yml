@@ -1,0 +1,43 @@
+name: Verificar Docker del proyecto final
+
+# Ejecutamos la validación ante cambios del proyecto y de forma manual si se necesita.
+on:
+  push:
+    paths:
+      - "proyecto_final_consumo/**"
+      - ".github/workflows/verificar-docker-proyecto-final.yml"
+  workflow_dispatch:
+
+# Definimos una única tarea que construye, inicia y consulta el contenedor.
+jobs:
+  prueba-docker:
+    runs-on: ubuntu-latest
+    steps:
+      # Descargamos el repositorio en el servidor temporal de GitHub Actions.
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      # Construimos la imagen que se presentará como evidencia de Docker en la nube.
+      - name: Construir imagen Docker
+        working-directory: proyecto_final_consumo
+        run: docker build -t pronostico-temperatura:verificacion .
+
+      # Iniciamos la API en modo demo para no requerir secretos de InfluxDB durante CI.
+      - name: Iniciar contenedor
+        run: docker run --name pronostico-demo -d -p 8000:8000 -e DEMO_MODE=true pronostico-temperatura:verificacion
+
+      # Consultamos salud y predicción para comprobar que la API y el modelo responden.
+      - name: Verificar API dentro del contenedor
+        run: |
+          curl --fail --retry 10 --retry-connrefused --retry-delay 2 http://127.0.0.1:8000/api/salud
+          curl --fail http://127.0.0.1:8000/api/prediccion?horas=6\&historia=48\&confianza=0.95
+
+      # Publicamos logs útiles incluso cuando una verificación falla.
+      - name: Mostrar registros del contenedor
+        if: always()
+        run: docker logs pronostico-demo || true
+
+      # Eliminamos el contenedor temporal para cerrar correctamente la demostración.
+      - name: Eliminar contenedor temporal
+        if: always()
+        run: docker rm -f pronostico-demo || true

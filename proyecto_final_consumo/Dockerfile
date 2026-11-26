@@ -14,6 +14,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app ./app
 COPY frontend ./frontend
 COPY models ./models
+COPY scripts ./scripts
+
+# Generamos un modelo sintético solo si no existe uno entrenado para validar la imagen.
+RUN if [ ! -f models/sarima_config.json ]; then DEMO_MODE=true python scripts/crear_modelo_demo.py; fi
 
 # Declaramos el puerto usado por Uvicorn.
 EXPOSE 8000

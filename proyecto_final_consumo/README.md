@@ -63,13 +63,42 @@ Para mostrarlo al profesor:
 
 También se puede iniciar manualmente con el botón **Run workflow**. Este flujo trabaja con `DEMO_MODE=true`, por lo cual no expone secretos de InfluxDB.
 
-### 2.4 Secretos para la conexión real
+### 2.4 Crear y configurar InfluxDB Cloud Serverless
 
-Antes de usar InfluxDB real, crea secretos de Codespaces con los nombres `INFLUX_URL`, `INFLUX_TOKEN`, `INFLUX_ORG`, `INFLUX_BUCKET`, `INFLUX_MEASUREMENT` e `INFLUX_FIELD`. Se agregan desde la configuración de GitHub en **Codespaces secrets** y se autorizan para este repositorio. Los secretos aparecen como variables de entorno dentro del Codespace, pero no se guardan en Git ni se muestran en la terminal.
+Las cuentas nuevas de InfluxDB Cloud usan Cloud Serverless v3. Esta aplicación es compatible con esa versión y con la API v2 clásica de la guía original.
+
+1. Abre `https://cloud2.influxdata.com/` y crea una cuenta gratuita.
+2. En la consola, crea un bucket o base de datos llamado `computacion_avanzada`.
+3. Crea un token con permisos de lectura y escritura para ese bucket. La escritura solo se necesita si se cargan los datos demo; para datos de un sensor real basta lectura.
+4. Conserva el token en un lugar seguro: no se puede volver a ver su valor completo después de crearlo.
+
+Para una cuenta nueva, configura estos valores en GitHub Codespaces secrets:
+
+```text
+INFLUX_VERSION=3
+INFLUX_URL=<URL de la instancia Cloud Serverless>
+INFLUX_TOKEN=<token privado>
+INFLUX_BUCKET=computacion_avanzada
+INFLUX_MEASUREMENT=sensores
+INFLUX_FIELD=temperatura
+```
+
+### 2.5 Secretos para la conexión real
+
+Antes de usar InfluxDB real, crea secretos de Codespaces con los nombres `INFLUX_VERSION`, `INFLUX_URL`, `INFLUX_TOKEN`, `INFLUX_BUCKET`, `INFLUX_MEASUREMENT` e `INFLUX_FIELD`. Para una instancia v2 clásica agrega también `INFLUX_ORG`. Se agregan desde la configuración de GitHub en **Codespaces secrets** y se autorizan para este repositorio. Los secretos aparecen como variables de entorno dentro del Codespace, pero no se guardan en Git ni se muestran en la terminal.
 
 Para una primera demostración presencial usa el modo demo. Luego, cuando el modelo esté entrenado con datos reales, se ejecuta la API sin `DEMO_MODE=true` y con los secretos definidos.
 
-### 2.5 Entrenar con la serie real dentro de Codespaces
+### 2.6 Cargar datos demo o entrenar con la serie real
+
+Si todavía no existe un sensor real, se puede cargar una serie sintética identificada como **DEMO** en InfluxDB. No debe presentarse como medición física real:
+
+```bash
+cd proyecto_final_consumo
+python scripts/cargar_demo_influx3.py
+```
+
+Si se dispone de una serie real, no ejecutar el script anterior y continuar directamente con el entrenamiento.
 
 Con los secretos ya configurados y con `DEMO_MODE` ausente o en `false`, ejecutar:
 

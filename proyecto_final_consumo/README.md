@@ -98,6 +98,8 @@ cd proyecto_final_consumo
 python scripts/cargar_demo_influx3.py
 ```
 
+El cargador crea 28 días de observaciones horarias para respetar la retención de 30 días del plan Free.
+
 Si se dispone de una serie real, no ejecutar el script anterior y continuar directamente con el entrenamiento.
 
 Con los secretos ya configurados y con `DEMO_MODE` ausente o en `false`, ejecutar:

@@ -22,8 +22,8 @@ def main():
     # Confirmamos URL, token y bucket antes de intentar una conexión remota.
     if not config.influx_configurado():
         raise RuntimeError("Faltan INFLUX_URL, INFLUX_TOKEN o INFLUX_BUCKET.")
-    # Generamos 28 días de datos para respetar el límite de retención del plan Free.
-    serie = serie_demo(24 * 28)
+    # Conservamos los últimos 28 días para respetar la retención y repetir valores ya cargados.
+    serie = serie_demo(24 * 30).iloc[-24 * 28 :]
     # Creamos el cliente conectado únicamente con secretos leídos del entorno.
     cliente = InfluxDBClient3(
         host=config.INFLUX_URL,
